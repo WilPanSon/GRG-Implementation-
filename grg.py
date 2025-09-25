@@ -29,13 +29,17 @@ class GRG:
     def __init__(
         self,
         nodes: set[Node],
-        samples: list[str] = None,):
+        haplotype_endpoints, 
+        haplotype_to_individual_map,
+        samples: list[str] = None):
         
         self.nodes = nodes
         self.mutations = [
             m for node in nodes for m in node.mut if m is not None
         ]  # iterate through nodes and mutations and add them to the mutations list, including m0
         self.samples = samples if samples is not None else []
+        self.haplotype_endpoints = haplotype_endpoints
+        self.haplotype_to_individual_map = haplotype_to_individual_map
         self.verify()
         
     def verify(self):
