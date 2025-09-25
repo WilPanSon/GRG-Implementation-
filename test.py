@@ -48,4 +48,7 @@ print(json.dumps(individual_to_mutation_map, indent=2))
 matrix = grg_.to_matrix()
 print(matrix)
 
+xtv = dot_product.xtv_mutation_vector(grg_)
+print(xtv)
+
 
