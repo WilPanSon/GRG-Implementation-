@@ -38,16 +38,14 @@ individual_map = {
 
 grg_ = grg.GRG(all_nodes, endpoints_map, individual_map)
 
-mutation_map = grg_.get_mutation_to_individuals(endpoints_map, individual_map)
+mutation_map = grg_.get_mutation_to_individuals()
 
 print(json.dumps(mutation_map, indent=2))
 
-individual_to_mutation_map = grg_.get_individuals_to_mutations(
-    endpoints_map, individual_map
-)
+individual_to_mutation_map = grg_.get_individuals_to_mutations()
 print(json.dumps(individual_to_mutation_map, indent=2))
 
-matrix = grg_.to_matrix(endpoints_map, individual_map)
+matrix = grg_.to_matrix()
 print(matrix)
 
 

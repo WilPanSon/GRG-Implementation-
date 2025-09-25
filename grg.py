@@ -103,9 +103,7 @@ class GRG:
 
         return all_parents, roots
 
-    def get_individuals_to_mutations(
-        self, haplotype_endpoints, haplotype_to_individual_map
-    ):
+    def get_individuals_to_mutations(self):
         """
         Returns a dictionary mapping each individual to all mutations
         present on either of their haplotypes.
@@ -113,7 +111,7 @@ class GRG:
         all_parents, roots = self._get_all_parents()
 
         haplotype_mutations = {}
-        for hap_id, terminal_node in haplotype_endpoints.items():
+        for hap_id, terminal_node in self.haplotype_endpoints.items():
             muts = set()
             visited = set()
             stack = [terminal_node]
@@ -136,19 +134,15 @@ class GRG:
 
         individual_to_mut_sets = defaultdict(set)
         for hap_id, muts in haplotype_mutations.items():
-            ind_id = haplotype_to_individual_map.get(hap_id)
+            ind_id = self.haplotype_to_individual_map.get(hap_id)
             if ind_id:
                 individual_to_mut_sets[ind_id].update(muts)
 
         return {ind: sorted(muts) for ind, muts in individual_to_mut_sets.items()}
 
-    def get_mutation_to_individuals(
-        self, haplotype_endpoints, haplotype_to_individual_map):
+    def get_mutation_to_individuals(self):
         # Step 1: Call the primary method to get the data
-        individual_to_mutations = self.get_individuals_to_mutations(
-            haplotype_endpoints,
-            haplotype_to_individual_map
-        )
+        individual_to_mutations = self.get_individuals_to_mutations()
 
         mutation_to_ind_sets = defaultdict(set)
         for individual, mutations in individual_to_mutations.items():
@@ -160,9 +154,9 @@ class GRG:
             for mut, inds in mutation_to_ind_sets.items()
         }
     
-    def verify_matrix(self, matrix, haplotype_endpoints, mutations_map):
+    def verify_matrix(self, matrix, mutations_map):
         dimensions = matrix.shape
-        if dimensions[0] != len(haplotype_endpoints):
+        if dimensions[0] != len(self.haplotype_endpoints):
             raise ValueError("Matrix doesn't have as many rows as haplotypes.")
         if dimensions[1] != len(mutations_map):
             raise ValueError("Matrix doesn't have as many columns as mutations.")
@@ -171,7 +165,7 @@ class GRG:
         return
     
     # Akshay
-    def to_matrix(self, haplotype_endpoints, haplotype_to_individual_map):
+    def to_matrix(self):
         """
         Returns a matrix where each row is a haplotype and each column is a mutation.
         Entry is 1 if the haplotype has the mutation, 0 otherwise.
@@ -181,7 +175,7 @@ class GRG:
         mutation_to_col = {mut: idx for idx, mut in enumerate(all_mutations)}
 
         # Get haplotype IDs in sorted order
-        haplotype_ids = sorted(haplotype_endpoints.keys())
+        haplotype_ids = sorted(self.haplotype_endpoints.keys())
         num_haplotypes = len(haplotype_ids)
         num_mutations = len(all_mutations)
 
@@ -190,7 +184,7 @@ class GRG:
         all_parents, _ = self._get_all_parents()
 
         for row_idx, hap_id in enumerate(haplotype_ids):
-            terminal_node = haplotype_endpoints[hap_id]
+            terminal_node = self.haplotype_endpoints[hap_id]
             muts = set()
             visited = set()
             stack = [terminal_node]
@@ -207,5 +201,5 @@ class GRG:
                 col_idx = mutation_to_col[mut]
                 matrix[row_idx, col_idx] = 1
         
-        self.verify_matrix(matrix, haplotype_endpoints, all_mutations)
+        self.verify_matrix(matrix, all_mutations)
         return matrix
