@@ -1,6 +1,5 @@
 from collections import defaultdict
 import numpy as np
-import json
 
 class Node:
     def __init__(self, n: int, mut):
@@ -203,3 +202,5 @@ class GRG:
         
         self.verify_matrix(matrix, all_mutations)
         return matrix
+    def dot(self, y):
+

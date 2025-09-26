@@ -1,6 +1,5 @@
 import json
 import grg
-import dot_product
 # mutations which arise in a node are stored in a tuple
 n0 = grg.Node(0, (3, 6, 7))
 n1 = grg.Node(1, (4))
@@ -48,7 +47,7 @@ print(json.dumps(individual_to_mutation_map, indent=2))
 matrix = grg_.to_matrix()
 print(matrix)
 
-xtv = dot_product.xtv_mutation_vector(grg_)
+xtv = grg.dot.xtv_mutation_vector(grg_)
 print(xtv)
 
 
