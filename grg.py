@@ -203,24 +203,27 @@ class GRG:
         self.verify_matrix(matrix, all_mutations)
         return matrix
     
-    def crawler(self, node, cache):
+    def crawler_value(self, node, y, cache):
         if node in cache:
             return cache[node]
 
-        muts = set(node.mut)  # start with node's own mutations
-        for child in node.adj:
-            muts |= self.crawler(child, cache)  # union with child's mutations
+        # own contribution from mutations
+        total = sum(y[mut] for mut in node.mut if mut is not None)
 
-        cache[node] = muts
-        return muts
+        # add contributions from children
+        for child in node.adj:
+            total += self.crawler_value(child, y, cache)
+
+        cache[node] = total
+        return total
 
     def dot(self, y):
         cache = {}
         total = 0
         for node in self.nodes:
-            muts = self.crawler(node, cache)
-            total += sum(y[mut] for mut in muts)
+            total += self.crawler_value(node, y, cache)
         return total
+
 
 
 
