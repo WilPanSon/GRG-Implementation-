@@ -1,7 +1,9 @@
 import json
-import grg
+
 import dot_product
+import grg
 import numpy as np
+
 # mutations which arise in a node are stored in a tuple
 n0 = grg.Node(0, (3, 6, 7))
 n1 = grg.Node(1, (4))
@@ -52,5 +54,4 @@ print(matrix)
 xtv = dot_product.xtv_mutation_vector(grg_)
 print(xtv)
 
-print(grg_.dot(np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])))
-
+print(dot_product.dot(grg_, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])))

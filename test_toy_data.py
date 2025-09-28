@@ -87,7 +87,7 @@ print(xtv)
 print("\n=== Dot Product Test ===")
 # Create a test vector for dot product computation
 # The vector should have entries for all possible mutations (0-3 based on sites)
-test_vector = np.array([0, 1, 2, 3])  # Values for mutations at sites 0,1,2,3
+test_vector = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 dot_result = dot_product.dot(grg_, test_vector)
 print(f"Dot product result: {dot_result}")
 
