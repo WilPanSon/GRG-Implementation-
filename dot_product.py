@@ -1,5 +1,53 @@
+from collections import defaultdict, deque
+
 import numpy as np
-from collections import defaultdict
+
+
+def dot(grg, y):
+    nodes_list = list(grg.nodes)
+    node_to_id = {node: i for i, node in enumerate(nodes_list)}
+    n = len(nodes_list)
+
+    node_mut_sum = np.zeros(n, dtype=np.float64)
+    for i, node in enumerate(nodes_list):
+        muts = [m for m in node.mut if m is not None]
+        if muts:
+            node_mut_sum[i] = np.sum(y[muts])
+
+    # Build adjacency and indegree
+    children = [[] for _ in range(n)]
+    indegree = np.zeros(n, dtype=np.int64)
+    for i, node in enumerate(nodes_list):
+        for child in node.adj:
+            j = node_to_id[child]
+            children[i].append(j)
+            indegree[j] += 1
+
+    q = deque([i for i in range(n) if indegree[i] == 0])
+    topo = []
+    while q:
+        u = q.popleft()
+        topo.append(u)
+        for v in children[u]:
+            indegree[v] -= 1
+            if indegree[v] == 0:
+                q.append(v)
+
+    endpoint_ids = {node_to_id[node] for node in grg.haplotype_endpoints.values()}
+    endpoint_count = np.zeros(n, dtype=np.int64)
+
+    # Process nodes in reverse topo order
+    for u in reversed(topo):
+        # Count 1 if this node is a haplotype endpoint
+        count = 1 if u in endpoint_ids else 0
+        # Add counts from children
+        for v in children[u]:
+            count += endpoint_count[v]
+        endpoint_count[u] = count
+
+    total = np.sum(endpoint_count * node_mut_sum)
+    return total
+
 
 def xtv_mutation_vector(grg):
     """

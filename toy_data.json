@@ -1,0 +1,49 @@
+{
+  "nodes": [
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 1, "individual": -1, "time": 0.0},
+    {"is_sample": 0, "individual": -1, "time": 1.0},
+    {"is_sample": 0, "individual": -1, "time": 1.0},
+    {"is_sample": 0, "individual": -1, "time": 1.0},
+    {"is_sample": 0, "individual": -1, "time": 1.0},
+    {"is_sample": 0, "individual": -1, "time": 2.0},
+    {"is_sample": 0, "individual": -1, "time": 2.0},
+    {"is_sample": 0, "individual": -1, "time": 3.0}
+  ],
+  "edges": [
+    {"left": 0.0, "right": 10.0, "parent": 8, "child": 0},
+    {"left": 0.0, "right": 10.0, "parent": 8, "child": 1},
+    {"left": 0.0, "right": 10.0, "parent": 9, "child": 2},
+    {"left": 0.0, "right": 10.0, "parent": 9, "child": 3},
+    {"left": 0.0, "right": 10.0, "parent": 10, "child": 4},
+    {"left": 0.0, "right": 10.0, "parent": 10, "child": 5},
+    {"left": 0.0, "right": 10.0, "parent": 11, "child": 6},
+    {"left": 0.0, "right": 5.0, "parent": 11, "child": 7},
+    {"left": 5.0, "right": 10.0, "parent": 8, "child": 7},
+    {"left": 0.0, "right": 10.0, "parent": 12, "child": 8},
+    {"left": 0.0, "right": 10.0, "parent": 12, "child": 9},
+    {"left": 0.0, "right": 10.0, "parent": 13, "child": 10},
+    {"left": 0.0, "right": 10.0, "parent": 13, "child": 11},
+    {"left": 0.0, "right": 10.0, "parent": 14, "child": 13},
+    {"left": 0.0, "right": 10.0, "parent": 14, "child": 12}
+  ],
+  "sites": [
+    {"position": 1.0, "ancestral_state": "A"},
+    {"position": 2.0, "ancestral_state": "A"},
+    {"position": 4.0, "ancestral_state": "A"},
+    {"position": 8.0, "ancestral_state": "A"}
+  ],
+  "mutations": [
+    {"site": 1, "node": 12, "derived_state": "G", "time": 2.5, "parent": -1},
+    {"site": 3, "node": 8, "derived_state": "G", "time": 1.5, "parent": -1},
+    {"site": 1, "node": 13, "derived_state": "C", "time": 2.5, "parent": -1},
+    {"site": 0, "node": 13, "derived_state": "T", "time": 2.5, "parent": -1},
+    {"site": 0, "node": 9, "derived_state": "G", "time": 1.5, "parent": -1}
+  ]
+}
