@@ -54,4 +54,4 @@ print(matrix)
 xtv = dot_product.xtv_mutation_vector(grg_)
 print(xtv)
 
-print(dot_product.dot(grg_, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])))
+print(dot_product.haplotype_dot_vector(grg_, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])))

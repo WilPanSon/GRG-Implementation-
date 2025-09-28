@@ -3,50 +3,48 @@ from collections import defaultdict, deque
 import numpy as np
 
 
-def dot(grg, y):
+def haplotype_dot_vector(grg, y):
+    """
+    Returns a vector: one entry per haplotype = dot product of its path with y.
+    """
+    # Stable node list for indexing
     nodes_list = list(grg.nodes)
     node_to_id = {node: i for i, node in enumerate(nodes_list)}
     n = len(nodes_list)
 
+    # Precompute mutation sums
     node_mut_sum = np.zeros(n, dtype=np.float64)
     for i, node in enumerate(nodes_list):
         muts = [m for m in node.mut if m is not None]
         if muts:
             node_mut_sum[i] = np.sum(y[muts])
 
-    # Build adjacency and indegree
-    children = [[] for _ in range(n)]
-    indegree = np.zeros(n, dtype=np.int64)
+    parents = [[] for _ in range(n)]
     for i, node in enumerate(nodes_list):
         for child in node.adj:
             j = node_to_id[child]
-            children[i].append(j)
-            indegree[j] += 1
+            parents[j].append(i)
 
-    q = deque([i for i in range(n) if indegree[i] == 0])
-    topo = []
-    while q:
-        u = q.popleft()
-        topo.append(u)
-        for v in children[u]:
-            indegree[v] -= 1
-            if indegree[v] == 0:
-                q.append(v)
+    # DP cache: total path weight for each node
+    cache = {}
 
-    endpoint_ids = {node_to_id[node] for node in grg.haplotype_endpoints.values()}
-    endpoint_count = np.zeros(n, dtype=np.int64)
+    def dfs(u):
+        if u in cache:
+            return cache[u]
+        total = node_mut_sum[u]
+        for p in parents[u]:
+            total += dfs(p)
+        cache[u] = total
+        return total
 
-    # Process nodes in reverse topo order
-    for u in reversed(topo):
-        # Count 1 if this node is a haplotype endpoint
-        count = 1 if u in endpoint_ids else 0
-        # Add counts from children
-        for v in children[u]:
-            count += endpoint_count[v]
-        endpoint_count[u] = count
+    # Compute vector for each haplotype
+    hap_ids = sorted(grg.haplotype_endpoints.keys())
+    hap_values = np.zeros(len(hap_ids), dtype=np.float64)
+    for i, hap_id in enumerate(hap_ids):
+        node = grg.haplotype_endpoints[hap_id]
+        hap_values[i] = dfs(node_to_id[node])
 
-    total = np.sum(endpoint_count * node_mut_sum)
-    return total
+    return hap_values
 
 
 def xtv_mutation_vector(grg):
